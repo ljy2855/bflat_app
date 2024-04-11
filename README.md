@@ -2,15 +2,18 @@
 
 A new Flutter project.
 
-## Getting Started
+## Module
 
-This project is a starting point for a Flutter application.
+#### models
+* API req, res 모델 정의
+* local에서 사용하는 데이터 정의
 
-A few resources to get you started if this is your first Flutter project:
+#### providers
+* service 호출 및 상태 관리를 위한 인터페이스
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+#### screens
+* 화면 프레임 및 디자인 
+* `StatelessWidget` or `StatefullWidget`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+#### widgets
+* sreen에 필요한 내부 components 정의
