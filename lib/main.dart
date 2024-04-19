@@ -2,8 +2,10 @@ import 'package:bflat_app/providers/recording_provider.dart';
 import 'package:bflat_app/screens/recording_sreeen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_config/flutter_config.dart';
 
-void main() {
+Future<void> main() async {
+  await FlutterConfig.loadEnvVariables();
   runApp(const MyApp());
 }
 

@@ -1,10 +1,11 @@
+import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
 
 class HttpClientService {
-  final String baseUrl = "http:/test.com";
+  final String baseUrl = FlutterConfig.get('API_URL');
 
   Future<bool> uploadFile(String filePath) async {
-    var uri = Uri.parse('$baseUrl/check_balance');
+    var uri = Uri.parse('$baseUrl/balance');
     var request = http.MultipartRequest('POST', uri);
     request.files.add(await http.MultipartFile.fromPath('file', filePath));
     var response = await request.send();
