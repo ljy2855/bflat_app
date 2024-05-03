@@ -1,8 +1,9 @@
-import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class HttpClientService {
-  final String baseUrl = FlutterConfig.get('API_URL');
+  final String? baseUrl = dotenv.env['API_URL'];
 
   Future<bool> uploadFile(String filePath) async {
     var uri = Uri.parse('$baseUrl/balance');
