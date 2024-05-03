@@ -17,8 +17,8 @@ class RecorderService {
           DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
       final localPath =
           '${directory.path}/recording_$formattedDateTime.mp4'; // 파일 확장자는 필요에 따라 변경 가능
-      await _recorder.start(const RecordConfig(), path: localPath); // 녹음 시작
       _localPath = localPath; // localPath 상태 업데이트
+      await _recorder.start(const RecordConfig(), path: localPath); // 녹음 시작
     }
   }
 

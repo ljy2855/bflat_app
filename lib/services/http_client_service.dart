@@ -12,6 +12,14 @@ class HttpClientService {
     return response.statusCode == 200;
   }
 
+  Future<http.StreamedResponse> checkSound(String filePath) async {
+    var uri = Uri.parse('$baseUrl/balance');
+    var request = http.MultipartRequest('POST', uri);
+    request.files.add(await http.MultipartFile.fromPath('file', filePath));
+    var response = await request.send();
+    return response;
+  }
+
   Future<http.Response> fetchData(String apiPath,
       {Map<String, String>? headers}) async {
     var uri = Uri.parse('$baseUrl$apiPath');

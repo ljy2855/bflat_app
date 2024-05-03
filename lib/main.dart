@@ -4,31 +4,47 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 
-Future<void> main() async {
-  await FlutterConfig.loadEnvVariables();
-  runApp(const MyApp());
+import 'screens/sound_check.dart';
+
+void main() {
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => RecordingProvider(),
-      child: MaterialApp(
-          title: 'Recorder App',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          home: RecordScreen(
-            key: key,
-          )),
+    return MaterialApp(
+      title: 'My App',
+      home: SoundCheckScreen(), // SoundCheckScreen 위젯 사용
     );
   }
 }
+
+// Future<void> main() async {
+//   await FlutterConfig.loadEnvVariables();
+//   runApp(const MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return ChangeNotifierProvider(
+//       create: (context) => RecordingProvider(),
+//       child: MaterialApp(
+//           title: 'Recorder App',
+//           theme: ThemeData(
+//             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+//             useMaterial3: true,
+//           ),
+//           home: RecordScreen(
+//             key: key,
+//           )),
+//     );
+//   }
+// }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
