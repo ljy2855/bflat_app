@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/find_locale.dart';
 import 'dart:async';
+import 'package:http/http.dart' as http;
 import '../services/recorder_service.dart';
 import '../services/http_client_service.dart';
 
@@ -121,18 +123,87 @@ class _SoundCheckScreenState extends State<SoundCheckScreen> {
     );
   }
 
+  Widget soundCheckResultScreen(BuildContext context, http.Response response) {
+    final Map<String, dynamic> _data = json.decode(response.body)["volumes"];
+
+    List<Map<String, dynamic>> results =
+        _data.entries.map<Map<String, dynamic>>((entry) {
+      double score = (entry.value is double)
+          ? entry.value
+          : double.tryParse(entry.value.toString()) ?? 0.0;
+      return {'label': entry.key, 'score': score};
+    }).toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Sound Check Results'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+              child: ListView.builder(
+                  itemCount: results.length,
+                  itemBuilder: (context, index) {
+                    var result = results[index];
+                    return ListTile(
+                      leading: Icon(
+                          Icons.music_note), // 실제 앱에서는 각 항목에 맞는 아이콘으로 교체하세요.
+                      title: Text(result['label']),
+                      subtitle: LinearProgressIndicator(
+                        value: result['score'] / 100.0, // 100을 최대값으로 가정합니다.
+                        backgroundColor: Colors.grey[300],
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                      ),
+                      trailing:
+                          Text('${result['score'].toStringAsFixed(1)} / 100'),
+                    );
+                  })),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // retry 기능 구현, 예를 들어 다시 검사를 시작하는 로직
+                    print("Retry button pressed");
+                  },
+                  child: Text('retry'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // analysis 기능 구현, 예를 들어 분석 페이지로 이동하거나 결과 분석 로직
+                    print("Analysis button pressed");
+                  },
+                  child: Text('analysis'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> checkSoundAndNavigate() async {
     final String? localPath = await _recorderService.localPath;
-    print("check");
     if (localPath != null) {
-      print("notnull");
       var response = await _httpClientService.checkSound(localPath);
       if (response.statusCode == 200) {
-        print("200");
         setState(() {
           isProcessing = false;
           resultText = "Processing successful!";
         });
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    soundCheckResultScreen(context, response)));
       } else {
         setState(() {
           isProcessing = false;
