@@ -16,6 +16,7 @@ class SoundCheckScreen extends StatefulWidget {
 class _SoundCheckScreenState extends State<SoundCheckScreen> {
   bool isRecording = false;
   bool isProcessing = false;
+  int option = 0;
   String resultText = "Finding...";
   final RecorderService _recorderService = RecorderService();
   final HttpClientService _httpClientService = HttpClientService();
@@ -57,8 +58,15 @@ class _SoundCheckScreenState extends State<SoundCheckScreen> {
         ),
         SizedBox(height: 20),
         ElevatedButton(
-          onPressed: () {
-            _showModalBottomSheet(context); // 하단 시트 표시
+          onPressed: () async {
+            String? response = await _showModalBottomSheet(context); // 하단 시트 표시
+            setState(() {
+              if (response == 'record until stop') {
+                option = 0;
+              } else if (response == 'record for 10 seconds') {
+                option = 1;
+              }
+            });
           },
           child: Text('check option'),
           style: ElevatedButton.styleFrom(
@@ -71,21 +79,38 @@ class _SoundCheckScreenState extends State<SoundCheckScreen> {
   }
 
   Widget buildRecordingScreen() {
+    Timer? _timer;
+
+    void dispose() {
+      _timer?.cancel(); // 타이머 자원 해제
+      super.dispose();
+    }
+
+    void stopRecordingAndCheck() async {
+      if (mounted) {
+        setState(() {
+          isRecording = false;
+          isProcessing = true;
+        });
+        await _recorderService.stopRecording();
+        await checkSoundAndNavigate();
+      }
+
+      dispose();
+    }
+
+    if (option == 1) {
+      _timer = Timer(Duration(seconds: 10), stopRecordingAndCheck);
+      print('set Timer');
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text('Recording...'), // 녹음 중임을 나타내는 텍스트
         SizedBox(height: 20),
         ElevatedButton(
-          onPressed: () async {
-            setState(() {
-              isRecording = false;
-              isProcessing = true;
-            });
-
-            await _recorderService.stopRecording();
-            await checkSoundAndNavigate();
-          },
+          onPressed: stopRecordingAndCheck,
           child: Text('stop'),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.grey[300],
@@ -172,6 +197,7 @@ class _SoundCheckScreenState extends State<SoundCheckScreen> {
                   onPressed: () {
                     // retry 기능 구현, 예를 들어 다시 검사를 시작하는 로직
                     print("Retry button pressed");
+                    Navigator.pop(context);
                   },
                   child: Text('retry'),
                 ),
@@ -218,8 +244,8 @@ class _SoundCheckScreenState extends State<SoundCheckScreen> {
     }
   }
 
-  void _showModalBottomSheet(BuildContext context) {
-    showModalBottomSheet(
+  Future<String?> _showModalBottomSheet(BuildContext context) {
+    return showModalBottomSheet<String>(
       context: context,
       builder: (BuildContext context) {
         return Container(
@@ -231,14 +257,15 @@ class _SoundCheckScreenState extends State<SoundCheckScreen> {
               ListTile(
                 title: Text('record until stop'),
                 onTap: () {
-                  Navigator.pop(context); // 선택 시 하단 시트 닫기
+                  Navigator.pop(context, 'record until stop'); // 선택 시 하단 시트 닫기
                   // 'record until stop' 동작 구현
                 },
               ),
               ListTile(
                 title: Text('record for 10 seconds'),
                 onTap: () {
-                  Navigator.pop(context); // 선택 시 하단 시트 닫기
+                  Navigator.pop(
+                      context, 'record for 10 seconds'); // 선택 시 하단 시트 닫기
                   // 'record for 10 seconds' 동작 구현
                 },
               ),
