@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
                 child: Card(
                   clipBehavior: Clip.antiAlias, // 카드 모서리에 맞춰 이미지가 잘리도록 설정
                   child: Image.asset(
-                    'images/band_along_card.png',
+                    'assets/images/band_along_card.png',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -42,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                 child: Card(
                   clipBehavior: Clip.antiAlias,
                   child: Image.asset(
-                    'images/home_along_card.png',
+                    'assets/images/home_along_card.png',
                     fit: BoxFit.cover,
                   ),
                 ),
