@@ -29,9 +29,4 @@ class RecorderService {
   Future<String?> get localPath async {
     return _localPath; // 녹음 파일 경로 반환
   }
-
-  Future<bool> uploadRecording(String url) async {
-    if (_localPath == null) return false;
-    return _httpClientService.uploadFile(_localPath!); // 수정된 부분
-  }
 }

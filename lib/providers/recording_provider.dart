@@ -16,9 +16,4 @@ class RecordingProvider with ChangeNotifier {
     _isRecording = !_isRecording;
     notifyListeners();
   }
-
-  Future<bool> uploadRecording(String url) async {
-    bool result = await _recorderService.uploadRecording(url);
-    return result;
-  }
 }

@@ -1,11 +1,8 @@
 import 'package:bflat_app/providers/recording_provider.dart';
 import 'package:bflat_app/screens/home_screen.dart';
-import 'package:bflat_app/screens/recording_sreeen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-
-import 'screens/sound_check.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
