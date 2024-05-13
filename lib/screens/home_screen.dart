@@ -75,12 +75,9 @@ class HomeScreen extends StatelessWidget {
                           builder: (context) => const BandAlongScreen()),
                     );
                   },
-                  child: Card(
-                    clipBehavior: Clip.antiAlias, // 카드 모서리에 맞춰 이미지가 잘리도록 설정
-                    child: Image.asset(
-                      'assets/images/band_along_card.png',
-                      fit: BoxFit.cover,
-                    ),
+                  child: Image.asset(
+                    'assets/images/band_along_card.png',
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -92,12 +89,9 @@ class HomeScreen extends StatelessWidget {
                 child: SizedBox(
                   width: 300,
                   height: 240,
-                  child: Card(
-                    clipBehavior: Clip.antiAlias,
-                    child: Image.asset(
-                      'assets/images/home_along_card.png',
-                      fit: BoxFit.cover,
-                    ),
+                  child: Image.asset(
+                    'assets/images/home_along_card.png',
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
