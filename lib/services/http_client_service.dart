@@ -25,6 +25,26 @@ class HttpClientService {
     }
   }
 
+  /*
+    음원 파일 전송
+    분리된 음원 파일 url 4개 받아오기
+   */
+  Future<http.Response> separateSource(String filePath) async {
+    var uri = Uri.parse('$baseUrl/analysis');
+    var request = http.MultipartRequest('POST', uri);
+
+    request.files.add(await http.MultipartFile.fromPath('file', filePath));
+
+    http.StreamedResponse streamedResponse = await request.send();
+
+    if (streamedResponse.statusCode == 200) {
+      String responseBody = await streamedResponse.stream.bytesToString();
+      return http.Response(responseBody, streamedResponse.statusCode);
+    } else {
+      return http.Response('', streamedResponse.statusCode);
+    }
+  }
+
   Future<http.Response> analysis(String filePath) async {
     var uri = Uri.parse('$baseUrl/analysis');
     var request = http.MultipartRequest('POST', uri);
