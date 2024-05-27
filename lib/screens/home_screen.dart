@@ -1,5 +1,6 @@
 import 'package:bflat_app/screens/select_record_screen.dart';
 import 'package:bflat_app/screens/sound_check.dart';
+import 'package:bflat_app/screens/stem_selection.dart';
 import 'package:flutter/material.dart';
 
 class UserProfileWidget extends StatelessWidget {
@@ -126,7 +127,7 @@ class BandAlongScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SoundCheckScreen()),
+                          builder: (context) => StemSelectionScreen()),
                     );
                   },
                   child: Card(
