@@ -1,4 +1,3 @@
-import 'package:bflat_app/models/analysis.dart';
 import 'package:bflat_app/screens/sound_check.dart';
 import 'package:flutter/material.dart';
 
