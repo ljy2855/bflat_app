@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:avatar_glow/avatar_glow.dart';
 
 import '../services/recorder_service.dart';
 import '../services/http_client_service.dart';
@@ -33,15 +35,19 @@ class _SoundCheckScreenState extends State<SoundCheckScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('SoundCheck'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+      appBar: _buildAppBar(),
       body: Center(
         child: buildScreen(),
+      ),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: Text('SoundCheck'),
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () => Navigator.pop(context),
       ),
     );
   }
@@ -68,7 +74,23 @@ class _SoundCheckScreenState extends State<SoundCheckScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        SizedBox(width: 100, height: 100),
+        Container(
+          width: 50,
+          height: 50,
+          child: CircleAvatar(
+            child: Material(
+              // Replace this child with your own
+              elevation: 8.0,
+              shape: CircleBorder(),
+              child: CircleAvatar(
+                backgroundColor: Colors.grey[100],
+                child: Icon(Icons.mic),
+                radius: 40.0,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 20),
         buildOptionButton('Start Recording', startRecording),
         SizedBox(height: 20),
         buildOptionButton('Check Option', showOptions),
@@ -83,11 +105,30 @@ class _SoundCheckScreenState extends State<SoundCheckScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        SizedBox(
-          width: 100,
-          height: 100,
+        Container(
+          width: 50,
+          height: 50,
+          child: AvatarGlow(
+            glowColor: Colors.blue,
+            duration: Duration(milliseconds: 2000),
+            repeat: true,
+            child: Material(
+              // Replace this child with your own
+              elevation: 8.0,
+              shape: CircleBorder(),
+              child: CircleAvatar(
+                backgroundColor: Colors.grey[100],
+                child: Icon(Icons.mic),
+                radius: 40.0,
+              ),
+            ),
+          ),
         ),
-        Text('Recording...'),
+        SizedBox(height: 30),
+        SizedBox(
+          child: Text('Recording...'),
+          height: 30,
+        ),
         SizedBox(height: 20),
         buildOptionButton('Stop Recording', stopRecordingAndCheck),
       ],
@@ -110,9 +151,11 @@ class _SoundCheckScreenState extends State<SoundCheckScreen> {
     Timer.periodic(Duration(milliseconds: 1000), (timer) {
       setState(() {
         _progress += 0.01;
-        if (_progress >= 0.9) {
+        if (_progress >= 1.0) {
+          timer.cancel();
+        } else if (_progress >= 0.9) {
           _progress = 0.9;
-          timer.cancel(); // 90%에서 타이머 중지
+          timer.cancel();
         }
       });
     });
@@ -255,11 +298,11 @@ class SoundCheckResultScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RecordAnalysisScreen()),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => RecordAnalysisScreen()),
+                    // );
                   },
                   child: Text('Record Analysis'),
                 ),
